@@ -15,26 +15,78 @@ extension NewsManager.Endpoint{
             
         case .everything:
            string =
-            """
+"""
 {
-            "status":"ok",
-            "totalResults":57757,
-            "articles":[
-               {
-                  "source":{
-                     "id":"engadget",
-                     "name":"Engadget"
-                  },
-                  "author":"Will Shanklin",
-                  "title":"Apple Music’s dedicated classical app arrives on Android",
-                  "description":"Apple Music Classical launched on Android today, bringing the company’s dedicated orchestral app to a non-Apple platform for the first time. It follows the iPhone debut of the service in March.Apple’s classical music app is separate from the mainline Apple Mu...",
-                  "url":"https://www.engadget.com/apple-musics-dedicated-classical-app-arrives-on-android-175118072.html",
-                  "urlToImage":"https://s.yimg.com/uu/api/res/1.2/2dFpIhi4xsIsnz3D8_QsMA--~B/Zmk9ZmlsbDtoPTYzMDtweW9mZj0wO3c9MTIwMDthcHBpZD15dGFjaHlvbg--/https://media-mbst-pub-ue1.s3.amazonaws.com/creatr-uploaded-images/2023-05/dc87cb80-ff10-11ed-bebd-7fcbdea107fd.cf.jpg",
-                  "publishedAt":"2023-05-30T17:51:18Z",
-                  "content":"Apple Music Classical launched on Android today, bringing the companys dedicated orchestral app to a non-Apple platform for the first time. It follows the iPhone debut of the service in March.\r\nApple… [+2098 chars]"
-               }
-            ]
-         }
+   "status":"ok",
+   "totalResults":57757,
+   "articles":[
+      {
+         "source":{
+            "id":"engadget",
+            "name":"Engadget"
+         },
+         "author":"Will Shanklin",
+         "title":"Apple Music’s dedicated classical app arrives on Android",
+         "description":"Apple Music Classical launched on Android today, bringing the company’s dedicated orchestral app to a non-Apple platform for the first time. It follows the iPhone debut of the service in March.Apple’s classical music app is separate from the mainline Apple Mu…",
+         "url":"https://www.engadget.com/apple-musics-dedicated-classical-app-arrives-on-android-175118072.html",
+         "urlToImage":"https://s.yimg.com/uu/api/res/1.2/2dFpIhi4xsIsnz3D8_QsMA--~B/Zmk9ZmlsbDtoPTYzMDtweW9mZj0wO3c9MTIwMDthcHBpZD15dGFjaHlvbg--/https://media-mbst-pub-ue1.s3.amazonaws.com/creatr-uploaded-images/2023-05/dc87cb80-ff10-11ed-bebd-7fcbdea107fd.cf.jpg",
+         "publishedAt":"2023-05-30T17:51:18Z",
+         "content":"Apple Music Classical launched on Android today, bringing the companys dedicated orchestral app to a non-Apple platform for the first time. It follows the iPhone debut of the service in March.\r\nApple… [+2098 chars]"
+      },
+      {
+         "source":{
+            "id":"engadget",
+            "name":"Engadget"
+         },
+         "author":"Devindra Hardawar",
+         "title":"Engadget Podcast: Apple WWDC 2023 preview",
+         "description":"It’s only a few days until the beginning of Apple’s Worldwide Developers Conference next week, and we’re eager to see what the iPhone maker is cooking up. This week, Cherlynn and Devindra are joined by Engadget Senior Writer Sam Rutherford to dive into all of…",
+         "url":"https://www.engadget.com/engadget-podcast-apple-wwdc-2023-preview-123020712.html",
+         "urlToImage":"https://s.yimg.com/uu/api/res/1.2/tdmZDSyzf3jjlI17q4HATQ--~B/Zmk9ZmlsbDtoPTYzMDtweW9mZj0wO3c9MTIwMDthcHBpZD15dGFjaHlvbg--/https://media-mbst-pub-ue1.s3.amazonaws.com/creatr-uploaded-images/2020-05/f43b53b0-909f-11ea-87fd-d8d721459924.cf.jpg",
+         "publishedAt":"2023-06-02T12:30:20Z",
+         "content":"Its only a few days until the beginning of Apples Worldwide Developers Conference next week, and were eager to see what the iPhone maker is cooking up. This week, Cherlynn and Devindra are joined by … [+1803 chars]"
+      },
+      {
+         "source":{
+            "id":"engadget",
+            "name":"Engadget"
+         },
+         "author":"Lawrence Bonk",
+         "title":"FaceTime is coming to Apple TV",
+         "description":"Apple took to the stage at WWDC today to announce that video-calling service FaceTime is finally coming to Apple TV hardware for the first time, thanks to a robust tvOS update. This seems to be a full-featured version of the company’s proprietary live-streami…",
+         "url":"https://www.engadget.com/facetime-is-coming-to-apple-tv-182616297.html",
+         "urlToImage":"https://s.yimg.com/uu/api/res/1.2/OP4V49nWliwex8FNeS4znw--~B/aD02NzU7dz0xMjAwO2FwcGlkPXl0YWNoeW9u/https://media-mbst-pub-ue1.s3.amazonaws.com/creatr-uploaded-images/2023-06/d7a751f0-03cd-11ee-bafe-64583ec6cced.cf.jpg",
+         "publishedAt":"2023-06-05T18:26:16Z",
+         "content":"Apple took to the stage at WWDC today to announce that video-calling service FaceTime is finally coming to Apple TV hardware for the first time, thanks to a robust tvOS update. This seems to be a ful… [+1465 chars]"
+      },
+      {
+         "source":{
+            "id":"engadget",
+            "name":"Engadget"
+         },
+         "author":"Devindra Hardawar",
+         "title":"Engadget Podcast: Apple WWDC 2023 wrap-up",
+         "description":"After tons of typing and running around Apple’s campus, we’re ready to wrap up WWDC 2023. This week, Devindra chats with Editor-in-Chief Dana Wollman and Senior Writer Sam Rutherford about Apple’s foray into spatial computing with the Vision Pro, the 15-inch …",
+         "url":"https://www.engadget.com/engadget-podcast-apple-wwdc-2023-wrap-up-123029415.html",
+         "urlToImage":"https://s.yimg.com/uu/api/res/1.2/tdmZDSyzf3jjlI17q4HATQ--~B/Zmk9ZmlsbDtoPTYzMDtweW9mZj0wO3c9MTIwMDthcHBpZD15dGFjaHlvbg--/https://media-mbst-pub-ue1.s3.amazonaws.com/creatr-uploaded-images/2020-05/f43b53b0-909f-11ea-87fd-d8d721459924.cf.jpg",
+         "publishedAt":"2023-06-09T12:30:29Z",
+         "content":"After tons of typing and running around Apples campus, were ready to wrap up WWDC 2023. This week, Devindra chats with Editor-in-Chief Dana Wollman and Senior Writer Sam Rutherford about Apples foray… [+1613 chars]"
+      },
+      {
+         "source":{
+            "id":"wired",
+            "name":"Wired"
+         },
+         "author":"Khari Johnson",
+         "title":"Apple Ghosts the Generative AI Revolution",
+         "description":"Apple unveiled the Vision Pro headset and a number of AI-powered features yesterday, but largely ignored generative AI applications embraced by Google and Microsoft.",
+         "url":"https://www.wired.com/story/apple-ghosts-the-generative-ai-revolution/",
+         "urlToImage":"https://media.wired.com/photos/647e7aef82d37ced55dff567/191:100/w_1280,c_limit/Apple-Ghosts-AI-At-WWDC-2023-Business-1258464875.jpg",
+         "publishedAt":"2023-06-06T11:00:00Z",
+         "content":"After years of anticipation and contributions from thousands of people, Apple Vision Pro made its debut yesterday, promising immersion in apps, games, movies, and the workplace. With more than 20 cam… [+2920 chars]"
+      }
+   ]
+}
 """
         case .topheadline:
             string =

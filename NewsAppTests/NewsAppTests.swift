@@ -10,7 +10,7 @@ import XCTest
 
 final class NewsAppTests: XCTestCase {
 
-    var sut:NewsManager = .sutb
+    var sut:NewsManager = .share
     
 //    override func setUp() {
 //        sut = .sutb
@@ -41,11 +41,12 @@ final class NewsAppTests: XCTestCase {
 
     
     
-    func testData() async {
+    func testfetchData() async {
         
-        let a =  await sut.getArticle()
-//        XCTAssertEqual(a.count, 2)
-        print("date:     \(a.articles.first!.author)")
+//        _ =  await sut.getArticle(endpoint: .everything(keyword: "apple"))
+        _ = await sut.getArticle(endpoint: .topheadline(country: "tw"))
+
+        
     }
     
     

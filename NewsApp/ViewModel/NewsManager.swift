@@ -10,7 +10,7 @@ import Foundation
 
 
 final class NewsManager:ObservableObject{
-    @Published private var newsItme:[NewsItem] = []
+    @Published private(set) var newsItme:[NewsItem] = []
     
     
     var getData: (Endpoint) async throws -> Data
@@ -22,12 +22,11 @@ final class NewsManager:ObservableObject{
     static let share = {
         let config = URLSessionConfiguration.default
         var header = config.httpAdditionalHeaders ?? [:]
-        header["X-Api-Key"] = "583c6570db65410d8a6d5fd5d3f02bc7"
+        header["X-Api-Key"] = ""
         config.httpAdditionalHeaders = header
         let session = URLSession(configuration: config)
         return NewsManager { try await session.data(for: $0.resquest) }
     }()  //設定
-    
 }
 
 extension NewsManager{
@@ -43,10 +42,11 @@ extension NewsManager{
     }
     
     
-    func getArticle() async -> NewsItem{
+    func getArticle(endpoint:Endpoint) async -> [NewsItem] {
 
         do{
-            let item:NewsItem = try await fetch(endpoint: .everything())
+            let item:[NewsItem] = try await fetch(endpoint: endpoint)
+            
             return item
         }catch{
             fatalError("❎    \(error.localizedDescription)")
@@ -64,9 +64,9 @@ extension NewsManager{
             var resquest:URLRequest{
                 switch self{
                 case .everything(let keyword):
-                    return URLRequest(url: URL(string: "https://newsapi.org/v2/everything?q=\(keyword)&pageSize=5")!)
+                    return URLRequest(url: URL(string: "https://newsapi.org/v2/everything?q=\(keyword)&pagesize=1")!)
                 case .topheadline(let country):
-                    return URLRequest(url: URL(string: "https://newsapi.org/v2/top-headlines?country=\(country)&pageSize=5")!)
+                    return URLRequest(url: URL(string: "https://newsapi.org/v2/top-headlines?country=\(country)&pagesize=1")!)
                 }
             }
         }
