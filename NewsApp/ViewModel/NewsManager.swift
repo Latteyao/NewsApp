@@ -16,6 +16,7 @@ final class NewsManager:ObservableObject{
     var getData: (Endpoint) async throws -> Data
     init(getData: @escaping (Endpoint) async throws -> Data){
         self.getData = getData
+        
     } //endpoint
     
     
@@ -45,9 +46,9 @@ extension NewsManager{
     func getArticle(endpoint:Endpoint) async -> [NewsItem] {
 
         do{
-            let item:[NewsItem] = try await fetch(endpoint: endpoint)
-            
-            return item
+            let item:NewsItem = try await fetch(endpoint: endpoint)
+            newsItme.append(item)
+            return newsItme
         }catch{
             fatalError("❎    \(error.localizedDescription)")
         }

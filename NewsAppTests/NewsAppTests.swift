@@ -10,11 +10,11 @@ import XCTest
 
 final class NewsAppTests: XCTestCase {
 
-    var sut:NewsManager = .share
+    var sut:NewsManager!
     
-//    override func setUp() {
-//        sut = .sutb
-//    }
+    override func setUp() {
+        sut = .share
+    }
     
 //    override func setUpWithError() throws {
 //        // Put setup code here. This method is called before the invocation of each test method in the class.
@@ -43,10 +43,12 @@ final class NewsAppTests: XCTestCase {
     
     func testfetchData() async {
         
-//        _ =  await sut.getArticle(endpoint: .everything(keyword: "apple"))
-        _ = await sut.getArticle(endpoint: .topheadline(country: "tw"))
-
-        
+        let everything =  await sut.getArticle(endpoint: .everything())
+        let topLine = await sut.getArticle(endpoint: .topheadline())
+        print(everything.first!.articles.first!.author ?? "")
+        print(everything.first!.articles.first!.title ?? "" )
+        print(everything.first!.articles.first!.description ?? "")
+        print(everything.first!.articles.first!.content ?? "")
     }
     
     
@@ -56,5 +58,5 @@ final class NewsAppTests: XCTestCase {
 
 
 extension NewsManager{
-    static var sutb:NewsManager{.init(getData: \.stub)}
+    static var sutb:NewsManager{.init(getData: {$0.stub})}
 }
