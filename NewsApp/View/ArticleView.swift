@@ -8,13 +8,22 @@
 import SwiftUI
 
 struct ArticleView: View {
+    @EnvironmentObject private var vm:NewsManager
+    @State var newsItem:[NewsItem] = []
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        NavigationView{
+            HStack{
+                Text("aa")
+            }
+        }
     }
 }
+
+
 
 struct ArticleView_Previews: PreviewProvider {
     static var previews: some View {
         ArticleView()
+            .environmentObject(NewsManager.init(getData: \.stub))
     }
 }

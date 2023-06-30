@@ -38,7 +38,7 @@ extension HomeScreen{
     private var tool: some View{
             switch self{
             case .news:
-                Label("news", systemImage: "newspaper.fill")
+                Label("news", systemImage: "house")
             case .setting:
                 Label("setting", systemImage: "gearshape")
             }
@@ -49,5 +49,6 @@ extension HomeScreen{
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         HomeScreen()
+            .environmentObject(NewsManager.share)
     }
 }
