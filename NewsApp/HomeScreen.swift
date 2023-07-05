@@ -24,7 +24,13 @@ extension HomeScreen{
     
     enum Tab: String,View,CaseIterable{
         case news, setting
-        var body: some View { content.tabItem{ tool.labelStyle(.iconOnly)} }
+        var body: some View { content.tabItem{
+            tool.labelStyle(.iconOnly)
+        }
+        .toolbar(.visible, for: .automatic)
+//        .toolbarBackground(Color(.white), for: .tabBar)
+            
+        }
     
     
     @ViewBuilder
@@ -49,6 +55,6 @@ extension HomeScreen{
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         HomeScreen()
-            .environmentObject(NewsManager.share)
+            .environmentObject(NewsManager.prview)
     }
 }
