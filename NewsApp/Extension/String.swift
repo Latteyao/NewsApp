@@ -10,7 +10,7 @@ import Foundation
 
 extension String{
     
-    var removingAllWhitespace:Self  {
+  public var removingAllWhitespace:Self  {
         self.filter{!$0.isWhitespace}
     }   //Use isWhitespace to handle newlines and blanks in content
     

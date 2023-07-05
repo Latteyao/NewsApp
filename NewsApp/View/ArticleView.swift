@@ -8,13 +8,20 @@
 import SwiftUI
 
 struct ArticleView: View {
+    
     @EnvironmentObject private var vm:NewsManager
-    @State var newsItem:[NewsItem] = []
     var body: some View {
-        NavigationView{
-            HStack{
-                Text("aa")
-            }
+            VStack{
+                if !vm.newsItme.isEmpty{
+                    
+                }else{
+                   
+                }
+                Text(vm.newsItme.first?.articles.first?.title ?? "").font(.largeTitle.bold())
+                AsyncImage(url: URL(string: vm.newsItme.first?.articles.first?.urlToImage ?? ""),scale: 3.0)
+                Spacer()
+                Text(vm.newsItme.first?.articles.first?.content ?? "")
+
         }
     }
 }
