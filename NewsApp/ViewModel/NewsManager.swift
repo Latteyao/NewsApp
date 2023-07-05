@@ -8,14 +8,16 @@
 import Foundation
 
 
-
+@MainActor
 final class NewsManager:ObservableObject{
+    
     @Published private(set) var newsItme:[NewsItem] = []
     
     
     var getData: (Endpoint) async throws -> Data
     init(getData: @escaping (Endpoint) async throws -> Data){
         self.getData = getData
+        
         
     } //endpoint
     
@@ -27,7 +29,12 @@ final class NewsManager:ObservableObject{
         config.httpAdditionalHeaders = header
         let session = URLSession(configuration: config)
         return NewsManager { try await session.data(for: $0.resquest) }
-    }()  //設定
+    }()  //setup URLSession singleton
+    
+    static let preview = NewsManager{
+        try await Task.sleep(for: .seconds(2))
+        return $0.stub
+    } 
 }
 
 extension NewsManager{
@@ -43,8 +50,7 @@ extension NewsManager{
     }
     
     
-    func getArticle(endpoint:Endpoint) async -> [NewsItem] {
-
+   func getArticle(endpoint:Endpoint) async -> [NewsItem] {
         do{
             let item:NewsItem = try await fetch(endpoint: endpoint)
             newsItme.append(item)
@@ -65,9 +71,9 @@ extension NewsManager{
             var resquest:URLRequest{
                 switch self{
                 case .everything(let keyword):
-                    return URLRequest(url: URL(string: "https://newsapi.org/v2/everything?q=\(keyword)&pagesize=1")!)
+                    return URLRequest(url: URL(string: "https://newsapi.org/v2/everything?q=\(keyword)&pagesize=10")!)
                 case .topheadline(let country):
-                    return URLRequest(url: URL(string: "https://newsapi.org/v2/top-headlines?country=\(country)&pagesize=1")!)
+                    return URLRequest(url: URL(string: "https://newsapi.org/v2/top-headlines?country=\(country)&pagesize=10")!)
                 }
             }
         }
