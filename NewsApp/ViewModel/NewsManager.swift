@@ -7,12 +7,11 @@
 
 import Foundation
 
-
 @MainActor
 final class NewsManager:ObservableObject{
     
     @Published private(set) var newsItme:[NewsItem] = []
-    
+    @Published private(set) var article:[Article] = []
     
     var getData: (Endpoint) async throws -> Data
     init(getData: @escaping (Endpoint) async throws -> Data){
@@ -25,7 +24,7 @@ final class NewsManager:ObservableObject{
     static let share = {
         let config = URLSessionConfiguration.default
         var header = config.httpAdditionalHeaders ?? [:]
-        header["X-Api-Key"] = ""
+        header["X-Api-Key"] = MyApiKey.apikey
         config.httpAdditionalHeaders = header
         let session = URLSession(configuration: config)
         return NewsManager { try await session.data(for: $0.resquest) }
@@ -50,33 +49,55 @@ extension NewsManager{
     }
     
     
-   func getArticle(endpoint:Endpoint) async -> [NewsItem] {
+    func getTopheadline(country:String,page:Int,pagesize:Int = 20) async -> ArticlesState {
+        
         do{
-            let item:NewsItem = try await fetch(endpoint: endpoint)
-            newsItme.append(item)
-            return newsItme
+            let item:NewsItem = try await fetch(endpoint: .topheadline(country: country, page: page,pagesize: pagesize))
+            guard !item.articles.isEmpty else{
+                return .fail(retrypage: page)
+            }
+            article.append(contentsOf: item.articles)
+            let isLastPage = article.count < pagesize
+            return .success(nextpage: isLastPage ? nil : page + 1)
         }catch{
-            fatalError("❎    \(error.localizedDescription)")
+            
+            print("❎    \(error.localizedDescription)")
+            return .fail(retrypage: page)
         }
             
     }
     
+    func reset(){
+        newsItme = []
+        article = []
+    }
+    
 }
+
+
+
+    
+
+
+
 
 //MARK: -Endpoint
     extension NewsManager{
         enum Endpoint{
-            case everything(keyword:String = "apple"), topheadline(country:String = "tw")
+            case everything(keyword:String = "apple"), topheadline(country:String,page:Int,pagesize:Int)
             
             var resquest:URLRequest{
                 switch self{
                 case .everything(let keyword):
                     return URLRequest(url: URL(string: "https://newsapi.org/v2/everything?q=\(keyword)&pagesize=10")!)
-                case .topheadline(let country):
-                    return URLRequest(url: URL(string: "https://newsapi.org/v2/top-headlines?country=\(country)&pagesize=10")!)
+                case .topheadline(let country,let page,let pagesize):
+                    return URLRequest(url: URL(string: "https://newsapi.org/v2/top-headlines?country=\(country)&page=\(page)&pagesize=\(pagesize)")!)
                 }
             }
         }
+        
+        
+        
     }
 
 
