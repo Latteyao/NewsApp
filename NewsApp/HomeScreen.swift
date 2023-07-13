@@ -13,7 +13,8 @@ struct HomeScreen: View {
         NavigationStack{
             TabView(selection: $tab) {
                 ForEach(Tab.allCases, id: \.self){ $0 }
-            }
+            }.toolbarRole(.editor)
+            
         }
         
     }
@@ -25,10 +26,12 @@ extension HomeScreen{
     enum Tab: String,View,CaseIterable{
         case news, setting
         var body: some View { content.tabItem{
-            tool.labelStyle(.iconOnly)
+            tool
+                .labelStyle(.iconOnly)
         }
-        .toolbar(.visible, for: .automatic)
-//        .toolbarBackground(Color(.white), for: .tabBar)
+//        .toolbar(.visible, for: .tabBar)
+        .toolbarBackground(.visible, for: .tabBar)
+        
             
         }
     
@@ -55,6 +58,6 @@ extension HomeScreen{
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         HomeScreen()
-            .environmentObject(NewsManager.prview)
+            .environmentObject(NewsManager.preview)
     }
 }
