@@ -28,9 +28,10 @@ struct Article: Codable {
     let urlToImage:String?
     let publishedAt:Date
     let content: String?
+    
 }
 
-// MARK: - Source
+//MARK: - Source
 struct Source: Codable {
     let id:String?
     let name:String?
@@ -39,9 +40,12 @@ struct Source: Codable {
 
 
 extension Article:Identifiable{
+
+    
     var id: String {
         url
     }
     
     
 }
+

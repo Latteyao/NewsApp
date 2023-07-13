@@ -12,8 +12,8 @@ final class NewsAppTests: XCTestCase {
 
     var sut:NewsManager!
     
-    override func setUp() {
-        sut = .share
+    @MainActor override func setUp() {
+        sut = .sutb
     }
     
 //    override func setUpWithError() throws {
@@ -40,15 +40,13 @@ final class NewsAppTests: XCTestCase {
 //    }
 
     
-    
-    func testfetchData() async {
-        
-        let everything =  await sut.getArticle(endpoint: .everything())
-        let topLine = await sut.getArticle(endpoint: .topheadline())
-        print(everything.first!.articles.first!.author ?? "")
-        print(everything.first!.articles.first!.title ?? "" )
-        print(everything.first!.articles.first!.description ?? "")
-        print(everything.first!.articles.first!.content ?? "")
+  @MainActor
+    func testfetchData()  {
+        Task{
+            let topLine = await sut.getTopheadline(country: "tw" , page: 0,pagesize: 5)
+            XCTAssertEqual(topLine, .success(nextpage: 1))
+            XCTAssertEqual(5, sut.article.count)
+        }
     }
     
     
