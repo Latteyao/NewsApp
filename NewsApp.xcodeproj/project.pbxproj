@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		104B2C092A5554A50066FCA1 /* URL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 104B2C082A5554A50066FCA1 /* URL.swift */; };
+		104B2C0B2A5FF3650066FCA1 /* NewsAPIKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 104B2C0A2A5FF3650066FCA1 /* NewsAPIKey.swift */; };
 		10B27C432A4AD856001347E4 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B27C422A4AD856001347E4 /* String.swift */; };
 		10CC4D082A3B572800F64B7A /* AppEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10CC4D072A3B572800F64B7A /* AppEntry.swift */; };
 		10CC4D0A2A3B572800F64B7A /* HomeScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10CC4D092A3B572800F64B7A /* HomeScreen.swift */; };
@@ -37,6 +38,7 @@
 
 /* Begin PBXFileReference section */
 		104B2C082A5554A50066FCA1 /* URL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URL.swift; sourceTree = "<group>"; };
+		104B2C0A2A5FF3650066FCA1 /* NewsAPIKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsAPIKey.swift; sourceTree = "<group>"; };
 		10B27C422A4AD856001347E4 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		10CC4D042A3B572800F64B7A /* NewsApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NewsApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		10CC4D072A3B572800F64B7A /* AppEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppEntry.swift; sourceTree = "<group>"; };
@@ -102,6 +104,7 @@
 				10CC4D072A3B572800F64B7A /* AppEntry.swift */,
 				10CC4D092A3B572800F64B7A /* HomeScreen.swift */,
 				10CC4D0B2A3B572900F64B7A /* Assets.xcassets */,
+				104B2C0A2A5FF3650066FCA1 /* NewsAPIKey.swift */,
 				10CC4D0D2A3B572900F64B7A /* Preview Content */,
 			);
 			path = NewsApp;
@@ -267,6 +270,7 @@
 				10B27C432A4AD856001347E4 /* String.swift in Sources */,
 				10CC4D1D2A4195B800F64B7A /* NewsItem.swift in Sources */,
 				10CC4D242A41E3EA00F64B7A /* ArticleView.swift in Sources */,
+				104B2C0B2A5FF3650066FCA1 /* NewsAPIKey.swift in Sources */,
 				104B2C092A5554A50066FCA1 /* URL.swift in Sources */,
 				10E512B42A542A6A00DB7B5E /* SafariWebView.swift in Sources */,
 				10CC4D1B2A418A7000F64B7A /* NewsView.swift in Sources */,
