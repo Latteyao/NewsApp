@@ -49,10 +49,10 @@ extension NewsManager{
     }
     
     
-    func getTopheadline(country:String,page:Int,pagesize:Int = 20) async -> ArticlesState {
+    func getTopheadline(country:String,category: String = "general",page:Int,pagesize:Int = 20) async -> ArticlesState {
         
         do{
-            let item:NewsItem = try await fetch(endpoint: .topheadline(country: country, page: page,pagesize: pagesize))
+            let item:NewsItem = try await fetch(endpoint: .topheadline(country: country,category: category,page: page, pagesize: pagesize))
             guard !item.articles.isEmpty else{
                 return .fail(retrypage: page)
             }
@@ -67,7 +67,7 @@ extension NewsManager{
             
     }
     
-    func reset(){
+    func reset() {
         newsItme = []
         article = []
     }
@@ -76,7 +76,11 @@ extension NewsManager{
 
 
 
-    
+enum ArticlesState:Equatable {
+    case loading(page:Int)
+    case success(nextpage:Int?)
+    case fail(retrypage:Int)
+}
 
 
 
@@ -84,14 +88,14 @@ extension NewsManager{
 //MARK: -Endpoint
     extension NewsManager{
         enum Endpoint{
-            case everything(keyword:String = "apple"), topheadline(country:String,page:Int,pagesize:Int)
+            case everything(keyword:String = "apple"), topheadline(country:String,category:String = "general",page:Int,pagesize:Int)
             
             var resquest:URLRequest{
                 switch self{
                 case .everything(let keyword):
                     return URLRequest(url: URL(string: "https://newsapi.org/v2/everything?q=\(keyword)&pagesize=10")!)
-                case .topheadline(let country,let page,let pagesize):
-                    return URLRequest(url: URL(string: "https://newsapi.org/v2/top-headlines?country=\(country)&page=\(page)&pagesize=\(pagesize)")!)
+                case .topheadline(let country,let category,let page,let pagesize):
+                    return URLRequest(url: URL(string: "https://newsapi.org/v2/top-headlines?country=\(country)&category=\(category)&page=\(page)&pagesize=\(pagesize)")!)
                 }
             }
         }

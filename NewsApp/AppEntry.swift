@@ -12,7 +12,7 @@ struct AppEntry: App {
     var body: some Scene {
         WindowGroup {
             HomeScreen()
-                .environmentObject(NewsManager.preview)
+                .environmentObject(NewsManager.share)
         }
     }
 }

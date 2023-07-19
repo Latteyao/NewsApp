@@ -7,33 +7,23 @@
 
 import SwiftUI
 
-
-
-enum ArticlesState:Equatable {
-    case loading(page:Int)
-    case success(nextpage:Int?)
-    case fail(retrypage:Int)
-}
-
-
-struct NewsView: View {
-    @EnvironmentObject private var vm:NewsManager
-    @AppStorage("country") private var country = countrys.tw.rawValue
-    
-    @State private var state:ArticlesState = .loading(page: 0)
-    
-    @State var error:Error? = nil
-    @State var url:URL?
-    @State var search:String = ""
-    var body: some View {
+    struct NewsView: View {
+        @EnvironmentObject private var vm:NewsManager
+        @AppStorage("country") private var country = countrys.tw.rawValue
+        @State var category:Category = .general
+        @State private var state:ArticlesState = .loading(page: 0)
+        @State var error:Error? = nil
+        @State var url:URL?
         
+        var body: some View {
+            
             VStack {
-                
-                    
                 title
+                
                 ScrollView {
                     LazyVStack{
                         mainView
+                        
                         Group{
                             switch state {
                             case .loading(let page):
@@ -41,7 +31,7 @@ struct NewsView: View {
                                     .controlSize(.large)
                                     .onAppear{
                                         
-                                        loadArticles(country: country,page: page)
+                                        loadArticles(country: country, category: category.rawValue,page: page)
                                         
                                     }
                             case .success(let nextpage?):
@@ -59,95 +49,99 @@ struct NewsView: View {
                         }.frame(minHeight: 100)
                     }
                 }
-//                .refreshable {
-//                    loadArticles(country: country,page: 0)
-//                }
                 .onChange(of: country) { _ in
                     vm.reset()
                     state = .loading(page: 0)   //reset preview page
                 } // change topheadline country reset
+                .onChange(of: category) { _ in
+                    vm.reset()
+                    state = .loading(page: 0)
+                }
+            }
         }
     }
-}
-
-
-extension NewsView{
-   private var title:some View{
-       
-       VStack{
-//           TextField(" secrch...", text: $search)
-//               .textFieldStyle(.roundedBorder)
-//               .padding()
-           HStack{
-               Text("News")
-                   .font(.largeTitle.bold())
-                   .frame(maxWidth: .infinity,alignment: .leading)
-               
-               Button("button"){
-               }
-               
-           }
-           .padding()
-           .frame(maxHeight: 45,alignment: .bottom)
-           .background(Color(.brown))
-       }
-       .background(Color(.brown))
-    }
     
-    private var mainView:some View{
-           
-                    
-                    ForEach(vm.article) {  articles in
-                        VStack(alignment:.trailing){
+    
+    extension NewsView{
+        
+        
+        private var title:some View{
+            VStack{
+                ScrollView(.horizontal){
+                    HStack{
+                        ForEach(Category.allCases,id: \.self){ string in
                             
-                            HStack{
-                                Button {
-                                    url = URL(string:articles.url) ?? nil
-                                } label: {
-                                    AsyncImage(url: URL(string: articles.urlToImage ?? "")) { image in
-                                        image.resizable()
-                                            .frame(maxWidth: 125,maxHeight:100)
-                                    } placeholder: {
-                                        Color.white
-                                    }
-                                    
-                                    VStack{
-                                        Text("\(articles.title)\n")
-                                        Spacer()
-                                        
-                                    }.font(.system(size: 15).bold())
-                                        .foregroundColor(.black)
-                                        .frame(maxWidth: .infinity)
-                                    
-                                }.fullScreenCover(item: $url, content: { url in
-                                    SafariWebView(url: url)
-                                        .ignoresSafeArea()
-                                })
+                            Button {
+                                withAnimation {
+                                    category = string
+                                }
+                            } label: {
+                                Text(string.rawValue)
+                                    .bold()
+                                    .font(.callout)
+                                    .opacity(category == string ? 1 : 0.5)
                                 
-                                
-                            }
-                            Text(articles.publishedAt.formatted(date: .complete, time: .omitted))
-                                .font(.caption2)
-                                .opacity(0.4)
-                            Divider()
+                            }.foregroundColor(category == string ? .black : .white)
+                            .padding()
+                            
                         }
-                    }.padding()
+                        
+                    }
                     
-                
-                
-                
-           
-                
+                }.scrollIndicators(.hidden)
+                    .background(Color(.brown))
+            }
+        }
         
-        
-           
+        private var mainView:some View{
+            ForEach(vm.article) {  articles in
+                VStack(alignment:.trailing){
+                    
+                    HStack{
+                        Button {
+                            url = URL(string:articles.url) ?? nil
+                        } label: {
+                            AsyncImage(url: URL(string: articles.urlToImage ?? "")) { image in
+                                image.resizable()
+                                    .frame(maxWidth: 125,maxHeight:100)
+                            } placeholder: {
+                                Color.white
+                            }
+                            
+                            VStack{
+                                Text("\(articles.title)\n")
+                                Spacer()
+                                
+                            }.font(.system(size: 15).bold())
+                                .foregroundColor(.black)
+                                .frame(maxWidth: .infinity)
+                            
+                        }.fullScreenCover(item: $url, content: { url in
+                            SafariWebView(url: url)
+                                .ignoresSafeArea()
+                        })
+                        
+                        
+                    }
+                    Text(articles.publishedAt.formatted(date: .complete, time: .omitted))
+                        .font(.caption2)
+                        .opacity(0.4)
+                    Divider()
+                        
+                }
+            }.padding()
+        }
         
     }
+
+
+//MARK: -- func
+extension NewsView{
     
-    func loadArticles(country:String,page:Int){
+    func loadArticles(country:String,category:String,page:Int){
             
         Task{
-           state = await vm.getTopheadline(country: country, page: page,pagesize: 5)
+            state = await vm.getTopheadline(country: country, category: category, page: page,pagesize: 5)
         }
         
         
@@ -155,18 +149,34 @@ extension NewsView{
     
     func retry(retrypage:Int) ->some View{
         
-            
+        HStack{
+            Text("Please retry again...")
             Button {
                 state = .fail(retrypage: retrypage)
             } label: {
-                Text("Please retry again...")
                 Image(systemName: "arrow.clockwise")
             }
-
-        
+            
+        }
     }
     
     }
+
+
+extension NewsView{
+    
+    enum Category:String,CaseIterable,Equatable{
+        case general
+        case business
+        case entertainment
+        case health
+        case science
+        case sports
+        case technology
+    }
+        
+    
+}
 
 
 

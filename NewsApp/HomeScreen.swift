@@ -10,31 +10,27 @@ import SwiftUI
 struct HomeScreen: View {
     @State var tab:Tab = .news
     var body: some View {
-        NavigationStack{
-            TabView(selection: $tab) {
-                ForEach(Tab.allCases, id: \.self){ $0 }
-            }.toolbarRole(.editor)
-            
-        }
         
+            NavigationStack{
+                TabView(selection: $tab) {
+                    ForEach(Tab.allCases, id: \.self){ $0 }
+                }.toolbarRole(.editor)
+            }
+        }
     }
-}
+
 
 
 extension HomeScreen{
     
     enum Tab: String,View,CaseIterable{
         case news, setting
-        var body: some View { content.tabItem{
-            tool
-                .labelStyle(.iconOnly)
-        }
-//        .toolbar(.visible, for: .tabBar)
+        var body: some View { content.tabItem{tool.labelStyle(.iconOnly)}
         .toolbarBackground(.visible, for: .tabBar)
-        
-            
         }
-    
+        
+        
+        
     
     @ViewBuilder
     private var content:some View{
@@ -54,6 +50,9 @@ extension HomeScreen{
         }
     }
 }
+
+
+
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
