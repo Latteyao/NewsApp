@@ -41,7 +41,6 @@ struct Source: Codable {
 
 extension Article:Identifiable{
 
-    
     var id: String {
         url
     }

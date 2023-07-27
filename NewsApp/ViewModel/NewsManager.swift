@@ -17,8 +17,7 @@ final class NewsManager:ObservableObject{
     init(getData: @escaping (Endpoint) async throws -> Data){
         self.getData = getData
         
-        
-    } //endpoint
+    } //switch Endpoint and get Data
     
     
     static let share = {
@@ -33,11 +32,11 @@ final class NewsManager:ObservableObject{
     static let preview = NewsManager{
         try await Task.sleep(for: .seconds(2))
         return $0.stub
-    } 
+    } // location data
 }
 
+//MARK: -- Sub
 extension NewsManager{
-    
     
     func fetch<T:Decodable>(endpoint:Endpoint) async throws -> T{
         let dateFormatter = DateFormatter()
@@ -46,11 +45,10 @@ extension NewsManager{
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .formatted(dateFormatter)
         return try decoder.decode(T.self, from: data)
-    }
+    } // decoder data
     
     
     func getTopheadline(country:String,category: String = "general",page:Int,pagesize:Int = 20) async -> ArticlesState {
-        
         do{
             let item:NewsItem = try await fetch(endpoint: .topheadline(country: country,category: category,page: page, pagesize: pagesize))
             guard !item.articles.isEmpty else{
@@ -65,22 +63,18 @@ extension NewsManager{
             return .fail(retrypage: page)
         }
             
-    }
+    } // fetch articles and return state
     
     func reset() {
         newsItme = []
         article = []
-    }
+    } // reset
     
 }
 
 
 
-enum ArticlesState:Equatable {
-    case loading(page:Int)
-    case success(nextpage:Int?)
-    case fail(retrypage:Int)
-}
+
 
 
 

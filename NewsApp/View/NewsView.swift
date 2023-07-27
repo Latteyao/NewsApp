@@ -10,43 +10,20 @@ import SwiftUI
     struct NewsView: View {
         @EnvironmentObject private var vm:NewsManager
         @AppStorage("country") private var country = countrys.tw.rawValue
-        @State var category:Category = .general
-        @State private var state:ArticlesState = .loading(page: 0)
+        @State var category:Category = .general // article category
+        @State private var state:NewsManager.ArticlesState = .loading(page: 0) // article state
         @State var error:Error? = nil
         @State var url:URL?
         
         var body: some View {
             
             VStack {
-                title
-                
+                categorybar
                 ScrollView {
                     LazyVStack{
                         mainView
                         
-                        Group{
-                            switch state {
-                            case .loading(let page):
-                                ProgressView()
-                                    .controlSize(.large)
-                                    .onAppear{
-                                        
-                                        loadArticles(country: country, category: category.rawValue,page: page)
-                                        
-                                    }
-                            case .success(let nextpage?):
-                                ProgressView()
-                                    .onAppear{
-                                        
-                                        state = .loading(page: nextpage)
-                                        
-                                    }
-                            case .fail(let retrypage):
-                                retry(retrypage: retrypage)
-                            default:
-                                EmptyView()
-                            }
-                        }.frame(minHeight: 100)
+                        articlesState
                     }
                 }
                 .onChange(of: country) { _ in
@@ -61,11 +38,10 @@ import SwiftUI
         }
     }
     
-    
-    extension NewsView{
-        
-        
-        private var title:some View{
+//MARK: -- SubView
+    extension NewsView {
+
+        private var categorybar:some View{
             VStack{
                 ScrollView(.horizontal){
                     HStack{
@@ -89,27 +65,35 @@ import SwiftUI
                     }
                     
                 }.scrollIndicators(.hidden)
-                    .background(Color(.brown))
+                .background(Color(.brown))
             }
         }
         
         private var mainView:some View{
             ForEach(vm.article) {  articles in
+                
                 VStack(alignment:.trailing){
                     
                     HStack{
                         Button {
-                            url = URL(string:articles.url) ?? nil
+                            url = URL(string:articles.url) ?? nil // get article url
                         } label: {
-                            AsyncImage(url: URL(string: articles.urlToImage ?? "")) { image in
-                                image.resizable()
-                                    .frame(maxWidth: 125,maxHeight:100)
-                            } placeholder: {
-                                Color.white
-                            }
+                            if articles.urlToImage != nil{
+                                AsyncImage(url: URL(string: articles.urlToImage ?? "")) { image in
+                                    image.resizable()
+                                        .frame(maxWidth: 125,maxHeight:100)
+                                } placeholder: {
+                                    Color.white
+                                }
+                            } else {
+                                Image("no image")
+                                    .resizable()
+                                    .frame(width: 130,height: 130)
+                                    .opacity(0.5)
+                            }  // display article image
                             
                             VStack{
-                                Text("\(articles.title)\n")
+                                Text("\(articles.title)\n") // article title
                                 Spacer()
                                 
                             }.font(.system(size: 15).bold())
@@ -117,21 +101,48 @@ import SwiftUI
                                 .frame(maxWidth: .infinity)
                             
                         }.fullScreenCover(item: $url, content: { url in
-                            SafariWebView(url: url)
+                            SafariWebView(url: url)  // show article page
                                 .ignoresSafeArea()
                         })
                         
                         
                     }
-                    Text(articles.publishedAt.formatted(date: .complete, time: .omitted))
+                    Text(articles.publishedAt.formatted(date: .complete, time: .omitted))  // article date
                         .font(.caption2)
                         .opacity(0.4)
                     Divider()
-                        
                 }
             }.padding()
         }
         
+        
+        private var articlesState: some View {
+            
+            Group{
+                switch state {
+                case .loading(let page):
+                    ProgressView()
+                        .controlSize(.large)
+                        .onAppear{
+                            loadArticles(country: country, category: category.rawValue,page: page)
+                        }
+                    
+                case .success(let nextpage?):
+                    ProgressView()
+                        .controlSize(.large)
+                        .onAppear{
+                            state = .loading(page: nextpage)
+                        }
+                    
+                case .fail(let retrypage):
+                    retry(retrypage: retrypage)
+                    
+                default:
+                    EmptyView()
+                    
+                } // article state
+            }.frame(minHeight: 100)
+        }
     }
 
 
@@ -186,3 +197,5 @@ struct NewsView_Previews: PreviewProvider {
             .environmentObject(NewsManager.preview)
     }
 }
+
+
