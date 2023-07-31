@@ -11,6 +11,7 @@ import SwiftUI
 struct AppEntry: App {
     var body: some Scene {
         WindowGroup {
+//            SearchView()
             HomeScreen()
                 .environmentObject(NewsManager.share)
         }

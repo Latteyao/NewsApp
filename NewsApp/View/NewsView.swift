@@ -7,16 +7,18 @@
 
 import SwiftUI
 
-    struct NewsView: View {
-        @EnvironmentObject private var vm:NewsManager
-        @AppStorage("country") private var country = countrys.tw.rawValue
-        @State var category:Category = .general // article category
-        @State private var state:NewsManager.ArticlesState = .loading(page: 0) // article state
-        @State var error:Error? = nil
-        @State var url:URL?
-        
-        var body: some View {
-            
+struct NewsView: View {
+    @EnvironmentObject private var vm:NewsManager
+    @AppStorage("country") private var country = countrys.us.rawValue
+    @State var category:Category = .general // article category
+    @State private var state:NewsManager.ArticlesState = .loading(page: 0) // article state
+    @State var error:Error? = nil
+    @State var url:URL?
+    @State var searchtext:String = ""
+    @State var istab:Bool = false
+    
+    var body: some View {
+        NavigationStack{
             VStack {
                 categorybar
                 ScrollView {
@@ -36,13 +38,29 @@ import SwiftUI
                 }
             }
         }
+            
     }
+}
     
 //MARK: -- SubView
     extension NewsView {
 
+        
+        
         private var categorybar:some View{
+            
             VStack{
+                
+                    NavigationLink {
+                        SearchView()
+                    } label: {
+                        TextField("search...", text: $searchtext)
+                            .textFieldStyle(.roundedBorder)
+                            .multilineTextAlignment(.leading)
+                            .padding(.horizontal)
+                    }
+                
+                
                 ScrollView(.horizontal){
                     HStack{
                         ForEach(Category.allCases,id: \.self){ string in
@@ -65,11 +83,12 @@ import SwiftUI
                     }
                     
                 }.scrollIndicators(.hidden)
-                .background(Color(.brown))
+                
             }
+            .background(Color(.brown))
         }
         
-        private var mainView:some View{
+         var mainView:some View{
             ForEach(vm.article) {  articles in
                 
                 VStack(alignment:.trailing){
