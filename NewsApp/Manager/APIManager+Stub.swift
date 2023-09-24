@@ -7,7 +7,9 @@
 
 import Foundation
 
-extension NewsManager.Endpoint{
+extension APIManager.Endpoint{
+  
+  ///Ever endpoints of local Data
     var stub: Data{
         var string:String
         
@@ -101,7 +103,7 @@ extension NewsManager.Endpoint{
             let pagination = array.dropFirst(page * pagesize).prefix(pagesize)
                 string =  pagination.joined(separator: "},{") + "}]}"
             title += string
-            return Data(title.removingAllWhitespace.utf8)
+            return Data(title.removingAllWhitespace.utf8) //local data
         }
         return Data(string.removingAllWhitespace.utf8)
       

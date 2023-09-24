@@ -8,55 +8,46 @@
 import SwiftUI
 
 struct HomeScreen: View {
-    @State var tab:Tab = .news
-    var body: some View {
-        
-            NavigationStack{
-                TabView(selection: $tab) {
-                    ForEach(Tab.allCases, id: \.self){ $0 }
-                }.toolbarRole(.editor)
-            }
-        }
+  @State var tab: Tab = .news
+  var body: some View {
+    NavigationStack {
+      TabView(selection: $tab) {
+        ForEach(Tab.allCases, id: \.self) { $0 }
+      }.toolbarRole(.editor)
     }
-
-
-
-extension HomeScreen{
-    
-    enum Tab: String,View,CaseIterable{
-        case news, setting
-        var body: some View { content.tabItem{tool.labelStyle(.iconOnly)}
-        .toolbarBackground(.visible, for: .tabBar)
-        }
-        
-        
-        
-    
-    @ViewBuilder
-    private var content:some View{
-        switch self{
-        case .news: NewsView()
-        case .setting: SettingView()
-        }
-    }
-    @ViewBuilder
-    private var tool: some View{
-            switch self{
-            case .news:
-                Label("news", systemImage: "house")
-            case .setting:
-                Label("setting", systemImage: "gearshape")
-            }
-        }
-    }
+  }
 }
 
+extension HomeScreen {
+  enum Tab: String, View, CaseIterable {
+    case news, setting
+    var body: some View { content.tabItem { tool.labelStyle(.iconOnly) }
+      .toolbarBackground(.visible, for: .tabBar)
+    }
 
+    @ViewBuilder
+    private var content: some View {
+      switch self {
+      case .news: NewsView()
+      case .setting: SettingView()
+      }
+    }
 
+    @ViewBuilder
+    private var tool: some View {
+      switch self {
+      case .news:
+        Label("news", systemImage: "house")
+      case .setting:
+        Label("setting", systemImage: "gearshape")
+      }
+    }
+  }
+}
 
 struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        HomeScreen()
-            .environmentObject(NewsManager.preview)
-    }
+  static var previews: some View {
+    HomeScreen()
+      .environmentObject(ArticleViewModel.instance)
+  }
 }

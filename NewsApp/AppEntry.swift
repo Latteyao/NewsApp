@@ -9,10 +9,10 @@ import SwiftUI
 
 @main
 struct AppEntry: App {
-    var body: some Scene {
-        WindowGroup {
-            HomeScreen()
-                .environmentObject(NewsManager.share)
-        }
+  var body: some Scene {
+    WindowGroup {
+      HomeScreen()
+        .environmentObject(ArticleViewModel.instance)
     }
+  }
 }

@@ -5,17 +5,17 @@
 //  Created by MacBook Pro on 2023/6/21.
 //
 
-import XCTest
 @testable import NewsApp
+import XCTest
 
+@MainActor
 final class NewsAppTests: XCTestCase {
+  var sut: ArticleViewModel = .init()
 
-    var sut:NewsManager!
-    
-    @MainActor override func setUp() {
-        sut = .sutb
-    }
-    
+  override func setUp() {
+    sut.apiManager = .sutb
+  }
+
 //    override func setUpWithError() throws {
 //        // Put setup code here. This method is called before the invocation of each test method in the class.
 //    }
@@ -39,22 +39,15 @@ final class NewsAppTests: XCTestCase {
 //        }
 //    }
 
-    
-  @MainActor
-    func testfetchData()  {
-        Task{
-            let topLine = await sut.getTopheadline(country: "tw" , page: 0,pagesize: 5)
-            XCTAssertEqual(topLine, .success(nextpage: 1))
-            XCTAssertEqual(5, sut.article.count)
-        }
+  func testfetchData() {
+    Task {
+      let topLine = await sut.getTopheadline(country: "tw", page: 0, pagesize: 5)
+      XCTAssertEqual(topLine, .success(nextpage: 1))
+      XCTAssertEqual(5, sut.article.count)
     }
-    
-    
-
+  }
 }
 
-
-
-extension NewsManager{
-    static var sutb:NewsManager{.init(getData: {$0.stub})}
+extension APIManager {
+  static var sutb: APIManager { .init(getData: { $0.stub }) }
 }
