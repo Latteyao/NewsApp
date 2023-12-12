@@ -13,10 +13,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
-      - name: Install Dependencies
-        run: |
-          pod install --repo-update
+        uses: actions/checkout@v3
       - name: Set Default Scheme
         run: |
           scheme_list=$(xcodebuild -list -json | tr -d "\n")
@@ -49,35 +46,3 @@ jobs:
           if [ "`ls -A | grep -i \\.xcworkspace\$`" ]; then filetype_parameter="workspace" && file_to_build="`ls -A | grep -i \\.xcworkspace\$`"; else filetype_parameter="project" && file_to_build="`ls -A | grep -i \\.xcodeproj\$`"; fi
           file_to_build=`echo $file_to_build | awk '{$1=$1;print}'`
           xcodebuild test-without-building -scheme "$scheme" -"$filetype_parameter" "$file_to_build" -destination "platform=$platform,name=$device"
-      - name: Create file status_build_test.txt and write the job status into it
-        if: always()
-        run: |
-          echo ${{ job.status }} > status_build_test.txt
-      - name: Upload file status_build_test.txt as an artifact
-        if: always()
-        uses: actions/upload-artifact@v1
-        with:
-          name: pass_status_build_test
-          path: status_build_test.txt
-  # 因为 notify-slack-action 跑在 Linux 系统所以另起一个 Job
-  notify:
-    needs: [ build ]
-    if: always()
-    name: Notify Slack
-    runs-on: ubuntu-latest
-    steps:
-      - name: Download artifact pass_status_build_test
-        uses: actions/download-artifact@v1
-        with:
-          name: pass_status_build_test
-      - name: Set the statuses of Job build output parameters
-        id: set_outputs
-        run: |
-          echo "::set-output name=status_build_test::$(<pass_status_build_test/status_build_test.txt)"
-      - name: Notify Slack
-        uses: ravsamhq/notify-slack-action@v1
-        if: always()
-        with:
-          status: ${{ steps.set_outputs.outputs.status_build_test }}
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
