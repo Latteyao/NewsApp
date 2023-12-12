@@ -20,7 +20,7 @@ jobs:
         xcode-version: '14.1'
 
     - name: Build
-      working-directory: NewsApp
+      working-directory: NewsApp/NewsApp
       run: |
         cd NewsApp
         xcodebuild build -project NewsApp.xcodeproj -scheme NewsApp clean build -sdk iphoneos CODE_SIGNING_ALLOWED=No
